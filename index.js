@@ -8,7 +8,7 @@ app.use(express.json());
 
 // database connection with mongoose
 mongoose
-  .connect('mongodb://localhost/todos')
+  .connect('mongodb://localhost:27017/todos')
   .then(() => console.log('Database connection successful'))
   .catch((err) => console.log(err));
 
@@ -18,7 +18,7 @@ app.use('/todo', todoHandler);
 // Default error handler
 function errorHandler(err, req, res, next) {
   if (res.headersSent) {
-    return next(err);
+    return next('headersSent', err);
   }
   res.status(500).json({ error: err });
 }
