@@ -68,5 +68,20 @@ router.post('/signin', async (req, res) => {
     });
   }
 });
+// Get All Users
+router.get('/all', async (req, res) => {
+  try {
+    const users = await User.find({}).populate('todos');
+    res.status(200).json({
+      data: users,
+      message: 'success',
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: 'There was an error on the server side!',
+    });
+  }
+});
 
 module.exports = router;
