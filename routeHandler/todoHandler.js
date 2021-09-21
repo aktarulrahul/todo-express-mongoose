@@ -28,8 +28,44 @@ router.get('/', (req, res) => {
       }
     });
 });
+// GET Active todos
+router.get('/active', async (req, res) => {
+  console.log('active');
+  try {
+    console.log('active-try');
+    const todo = new Todo();
+    const data = await todo.findActive();
+    res.status(200).json({ data });
+  } catch {
+    console.log('active-catch');
+    res.status(500).json({
+      error: 'There was a server side error - try!',
+    });
+  }
+});
+
+// GET Active-callback todos
+router.get('/active-callback', (req, res) => {
+  const todo = new Todo();
+  todo.findActiveCallback((err, data) => {
+    res.status(200).json({ data });
+  });
+});
+
+// GET js todos
+router.get('/js', async (req, res) => {
+  const data = await Todo.findByJS();
+  res.status(200).json({ data });
+});
+// GET todos by language using Query Helper
+router.get('/language', async (req, res) => {
+  const data = await Todo.find().byLanguage('react');
+  res.status(200).json({ data });
+});
+
 // GET single todo
 router.get('/:id', async (req, res) => {
+  console.log('by id');
   try {
     const data = await Todo.find({ _id: req.params.id });
     res.status(200).json({
@@ -42,6 +78,7 @@ router.get('/:id', async (req, res) => {
     });
   }
 });
+
 // POST todo
 router.post('/', (req, res) => {
   const newTodo = new Todo(req.body);
