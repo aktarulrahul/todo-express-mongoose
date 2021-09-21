@@ -20,11 +20,12 @@ app.use('/todo', todoHandler);
 app.use('/user', userHandler);
 
 // Default error handler
-function errorHandler(err, req, res, next) {
+const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next('headersSent', err);
   }
   res.status(500).json({ error: err });
-}
+};
+app.use(errorHandler);
 
 app.listen(3000, () => console.log('App listening at port 3000'));
